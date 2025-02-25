@@ -13,5 +13,15 @@ def postRequestTask(address: str, data):
         'Content-Type': 'aplication/json',
     }
 
-    response = requests.post(address, data=data, headers=headers)
+    response = requests.post(address, headers=headers, data=data)
+    return response.content
+
+@app.task
+def deleteRequestTask(address: str, authToken):
+
+    headers = {
+        'Authorization': authToken
+    }
+
+    response = requests.delete(address, headers=headers)
     return response.content

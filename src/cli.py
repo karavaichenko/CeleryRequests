@@ -7,6 +7,14 @@ def getReq(args):
     except:
         print("Incorrect request address")
 
+def deleteReq(args):
+    try:
+        getByAddress(args[1], args[2])
+    except(IndexError):
+        print("Excepted authToken")
+    except:
+        print("Incorrect request address")
+
 def postReq(args):
     try:
         with open(args[2], "r") as file:

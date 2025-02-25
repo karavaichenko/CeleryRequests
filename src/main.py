@@ -1,4 +1,4 @@
-from tasks import getRequestTask, postRequestTask
+from tasks import getRequestTask, postRequestTask, deleteRequestTask
 from flask import Flask
 
 app = Flask(__name__)
@@ -15,4 +15,8 @@ def postByAddress(address, data):
     print('Task ID: ', result.id)
     print('Result: ', result.get())
     
-
+@app.route('/delete')
+def deleteByAddress(address, authToken):
+    result = deleteRequestTask(address, authToken)
+    print('Task ID: ', result.id)
+    print('Result: ', result.get())
