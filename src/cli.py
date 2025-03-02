@@ -1,43 +1,33 @@
-from main import getByAddress, postByAddress
+import click
+from main import getByAddress, postByAddress, deleteByAddress
 import json
 
-def getReq(args):
-    try:
-        getByAddress(args[1])
-    except:
-        print("Incorrect request address")
+@click.group()
+def cli():
+    pass
 
-def deleteReq(args):
-    try:
-        getByAddress(args[1], args[2])
-    except(IndexError):
-        print("Excepted authToken")
-    except:
-        print("Incorrect request address")
+@click.command()
+@click.option('--address')
+def get(address):
+    getByAddress(address)
 
-def postReq(args):
-    try:
-        with open(args[2], "r") as file:
+@click.command()
+@click.option('--address')
+@click.option('--path')
+def post(address, path):
+    with open(path, "r") as file:
             data = json.load(file)
-        postByAddress(args[1], data)
-    except(FileNotFoundError):
-        print("Incorrect path to JSON")
-    except:
-        print("Incorrect request address")
+    postByAddress(address, data)
 
+@click.command()
+@click.option('--address')
+@click.option('--authToken')
+def delete(address, authToken):
+    deleteByAddress(address, authToken)
 
-while True:
-    print("\n\nChoose request")
-    print("get 'address'")
-    print("post 'address' 'path_to_JSON'")
-    print("exit\n\n")
-    inp = input()
-    args = inp.split()
-    if args[0] == "exit":
-        break
-    elif len(args) < 2:
-        print("Error: Expected more arguments")
-    elif args[0] == "get":
-        getReq(args)
-    elif args[0] == "post":
-        postReq(args)
+cli.add_command(get)
+cli.add_command(post)
+cli.add_command(delete)
+
+if __name__ == '__main__':
+    cli()
